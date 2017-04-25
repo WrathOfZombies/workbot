@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Bot.Connector;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 
 namespace WorkBot
 {
@@ -19,6 +18,7 @@ namespace WorkBot
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -27,8 +27,9 @@ namespace WorkBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc();
+            services.AddSingleton(_ => Configuration);
+
+
 #if DEBUG
             services.Configure<BotCredentials>(Configuration.GetSection("BotCredentials"));
 #else
@@ -37,8 +38,14 @@ namespace WorkBot
                 botCredentials.ClientId = Environment.GetEnvironmentVariable("CLIENT_ID");
                 botCredentials.ClientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
             });
-#endif
+#endif        
+
+            // Add framework services.
             services.AddMemoryCache();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new TrustServiceUrlAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +53,7 @@ namespace WorkBot
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

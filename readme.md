@@ -47,8 +47,8 @@ Create an `appsettings.json` file in the **root** of the project and paste the f
         }
     },
     "BotCredentials": {
-        "ClientId": "<CLIENT_ID>",
-        "ClientSecret": "<CLIENT_SECRET>"
+        "ClientId": "CLIENT_ID",
+        "ClientSecret": "CLIENT_SECRET"
     }
 }
 ```
@@ -79,7 +79,7 @@ Follow the steps to deploy to Azure manually.
 For the first time, do the following:
 
 ```cmd
-git remote add azure https://<username>@work-bot.scm.azurewebsites.net:443/work-bot.git
+git remote add azure https://username@work-bot.scm.azurewebsites.net:443/work-bot.git
 ```
 
 Subsequently you can do:

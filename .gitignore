@@ -5,6 +5,7 @@
 
 # Ignored Folders
 
+**/.vs
 **/bin
 **/obj
 **/node_modules
