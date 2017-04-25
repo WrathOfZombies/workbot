@@ -12,39 +12,41 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WorkBot.Controllers
 {
-  [Route("api/[controller]")]
-  public class EchoController : Controller
-  {
-    private readonly IMemoryCache _memoryCache;
-    private readonly MicrosoftAppCredentials _microsoftAppCredentials;
-
-    public EchoController(IMemoryCache memoryCache, IOptions<BotCredentials> botCredentials)
+    [Route("api/[controller]")]
+    public class EchoController : Controller
     {
-      this._memoryCache = memoryCache;
-      this._microsoftAppCredentials = new MicrosoftAppCredentials(botCredentials.Value.ClientId, botCredentials.Value.ClientSecret);
-    }
+        private readonly IMemoryCache _memoryCache;
+        private readonly MicrosoftAppCredentials _microsoftAppCredentials;
 
-    [HttpGet]
-    public OkObjectResult Get()
-    {
-      return Ok($"Echo bot running successfully via {this._microsoftAppCredentials.MicrosoftAppId}");
-    }
+        public EchoController(IMemoryCache memoryCache, IOptions<BotCredentials> botCredentials)
+        {
+            this._memoryCache = memoryCache;
+            this._microsoftAppCredentials = new MicrosoftAppCredentials(botCredentials.Value.ClientId, botCredentials.Value.ClientSecret);
+        }
 
-    [HttpPost]
-    public virtual async Task<OkResult> Post([FromBody]Activity activity)
-    {
-      var client = new ConnectorClient(new Uri(activity.ServiceUrl), this._microsoftAppCredentials);
-      var reply = activity.CreateReply();
-      if (activity.Type == ActivityTypes.Message)
-      {
-        reply.Text = $"echo: {activity.Text}";
-      }
-      else
-      {
-        reply.Text = $"activity type: {activity.Type}";
-      }
-      await client.Conversations.ReplyToActivityAsync(reply);
-      return Ok();
+        [HttpGet]
+        [Route("")]
+        public OkObjectResult Get()
+        {
+            return Ok($"Echo bot running successfully via {this._microsoftAppCredentials.MicrosoftAppId}");
+        }
+
+        [HttpPost]
+        [Route("")]
+        public virtual async Task<OkResult> Post([FromBody]Activity activity)
+        {
+            var client = new ConnectorClient(new Uri(activity.ServiceUrl), this._microsoftAppCredentials);
+            var reply = activity.CreateReply();
+            if (activity.Type == ActivityTypes.Message)
+            {
+                reply.Text = $"echo: {activity.Text}";
+            }
+            else
+            {
+                reply.Text = $"activity type: {activity.Type}";
+            }
+            await client.Conversations.ReplyToActivityAsync(reply);
+            return Ok();
+        }
     }
-  }
 }
