@@ -16,7 +16,6 @@ namespace WorkBot
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -27,8 +26,8 @@ namespace WorkBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(_ => Configuration);
-
+            services.AddMvc();
+            services.AddMemoryCache();
 
 #if DEBUG
             services.Configure<BotCredentials>(Configuration.GetSection("BotCredentials"));
@@ -38,14 +37,7 @@ namespace WorkBot
                 botCredentials.ClientId = Environment.GetEnvironmentVariable("CLIENT_ID");
                 botCredentials.ClientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET");
             });
-#endif        
-
-            // Add framework services.
-            services.AddMemoryCache();
-            services.AddMvc(options =>
-            {
-                options.Filters.Add(new TrustServiceUrlAttribute());
-            });
+#endif                    
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
