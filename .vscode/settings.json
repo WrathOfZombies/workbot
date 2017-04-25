@@ -1,0 +1,10 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.trimAutoWhitespace": true,
+    "editor.renderWhitespace": "all",
+    "workbench.iconTheme": "vs-seti",
+    "files.autoSave": "afterDelay",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true
+}

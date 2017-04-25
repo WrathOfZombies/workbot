@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <AssemblyName>WorkBot</AssemblyName>
+    <PackageId>WorkBot</PackageId>
+    <Authors>Amritha Dilip;Bhargav Krishna</Authors>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <AssemblyTitle>Work Bot</AssemblyTitle>
+    <Description>A bot to help query and manage work items across GitHub and Visual Studio Team Services.</Description>
+    <Version>1.0.0</Version>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageTargetFallback>portable-net451+win8</PackageTargetFallback>
+    <ApplicationInsightsResourceId>/subscriptions/103f9e39-f8b9-4fa4-81b5-0f17fb195e10/resourcegroups/work-bot/providers/microsoft.insights/components/work-bot</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/103f9e39-f8b9-4fa4-81b5-0f17fb195e10/resourcegroups/work-bot/providers/microsoft.insights/components/work-bot</ApplicationInsightsAnnotationResourceId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Update="wwwroot;appsettings.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
+  </ItemGroup>
+</Project>

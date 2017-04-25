@@ -1,0 +1,11 @@
+# Ignored Files
+
+**/*.suo
+**/*.csproj.user
+
+# Ignored Folders
+
+**/bin
+**/obj
+**/node_modules
+**/appsettings.json
