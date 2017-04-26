@@ -8,6 +8,7 @@ Download and install the following:
 
 - **.NET Core SDK** from https://www.microsoft.com/net/core#windowscmd
 - **Git for Windows** from https://git-scm.com/download/win
+- **Bot Framework Emulator** from https://docs.botframework.com/en-us/tools/bot-framework-emulator/
 
 You can get either:
 - **Visual Studio Code** from https://code.visualstudio.com/

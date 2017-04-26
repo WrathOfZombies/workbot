@@ -9,44 +9,49 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Bot.Connector;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
 
 namespace WorkBot.Controllers
 {
     [Route("api/[controller]")]
     public class EchoController : Controller
     {
-        private readonly IMemoryCache _memoryCache;
-        private readonly MicrosoftAppCredentials _microsoftAppCredentials;
+        private readonly MicrosoftAppCredentials _credentials;
 
-        public EchoController(IMemoryCache memoryCache, IOptions<BotCredentials> botCredentials)
+        public EchoController(MicrosoftAppCredentials credentials)
         {
-            this._memoryCache = memoryCache;
-            this._microsoftAppCredentials = new MicrosoftAppCredentials(botCredentials.Value.ClientId, botCredentials.Value.ClientSecret);
+            this._credentials = credentials;
         }
 
         [HttpGet]
-        [Route("")]
-        public OkObjectResult Get()
+        public IActionResult Get()
         {
-            return Ok($"Echo bot running successfully via {this._microsoftAppCredentials.MicrosoftAppId}");
+            return Ok($"Echo bot running successfully via {this._credentials.MicrosoftAppId}");
         }
 
+        [Authorize(Roles = "Bot")]
         [HttpPost]
-        [Route("")]
-        public virtual async Task<OkResult> Post([FromBody]Activity activity)
+        public virtual async Task<IActionResult> Post([FromBody]Activity activity)
         {
-            var client = new ConnectorClient(new Uri(activity.ServiceUrl), this._microsoftAppCredentials);
-            var reply = activity.CreateReply();
-            if (activity.Type == ActivityTypes.Message)
+            try
             {
-                reply.Text = $"echo: {activity.Text}";
+                var client = new ConnectorClient(new Uri(activity.ServiceUrl), this._credentials);
+                var reply = activity.CreateReply();
+                if (activity.Type == ActivityTypes.Message)
+                {
+                    reply.Text = $"echo: {activity.Text}";
+                }
+                else
+                {
+                    reply.Text = $"activity type: {activity.Type}";
+                }
+                await client.Conversations.ReplyToActivityAsync(reply);
+                return Ok();
             }
-            else
+            catch(Exception exception)
             {
-                reply.Text = $"activity type: {activity.Type}";
+                return UnauthorizedAccessException(exception);
             }
-            await client.Conversations.ReplyToActivityAsync(reply);
-            return Ok();
         }
     }
 }
