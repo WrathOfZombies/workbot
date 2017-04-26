@@ -60,7 +60,13 @@ Use `F5` to start the project.
 
 > Note: If you are having problems debugging on **VSCode** then type `Ctrl` + `Shift` + `P` and enter **Debug: Download .NET Core Debugger** to download the debugger.
 
+### Using Visual Studio Code 
+
 Navigate to `http://localhost:5000/api/echo` and you should see a message such as *Echo bot is ready with <CLIENT_ID>*
+
+### Using Visual Studio
+
+Navigate to `https://localhost:44300/api/echo`. If required make sure to trust the certificates. Follow the following gif to do the same: [Trusting SSL Cert on Windows](https://github.com/OfficeDev/script-lab/blob/master/.github/images/trust-ssl-internet-explorer.gif)
 
 ## Deploying to Azure
 
