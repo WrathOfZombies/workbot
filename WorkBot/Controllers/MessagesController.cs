@@ -39,7 +39,7 @@ namespace WorkBot.Controllers
                 var reply = activity.CreateReply();
                 if (activity.Type == ActivityTypes.Message)
                 {
-                    reply.Text = $"echo: {activity.Text}";
+                    reply.Text = activity.Text.Replace("Work Bot", "");
                 }
                 else
                 {
@@ -48,7 +48,7 @@ namespace WorkBot.Controllers
                 await client.Conversations.ReplyToActivityAsync(reply);
                 return Ok();
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return BadRequest(exception);
             }

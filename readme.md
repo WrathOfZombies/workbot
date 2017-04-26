@@ -43,7 +43,7 @@ Create an `appsettings.json` file in the **root** of the project and paste the f
 {
   "Logging": {
     "IncludeScopes": false,
-    "LogLevehttps://work-bot.azurewebsites.net/api/echol": {
+    "LogLevehttps://work-bot.azurewebsites.net/api/messages": {
       "Default": "Warning"
     }
   },
@@ -62,11 +62,11 @@ Use `F5` to start the project.
 
 ### Using Visual Studio Code 
 
-Navigate to `http://localhost:5000/api/echo` and you should see a message such as *Echo bot is ready with <CLIENT_ID>*
+Navigate to `http://localhost:5000/api/messages` and you should see a message such as *Echo bot is ready with <CLIENT_ID>*
 
 ### Using Visual Studio
 
-Navigate to `https://localhost:44300/api/echo`. If required make sure to trust the certificates. Follow the following gif to do the same: [Trusting SSL Cert on Windows](https://github.com/OfficeDev/script-lab/blob/master/.github/images/trust-ssl-internet-explorer.gif)
+Navigate to `https://localhost:44300/api/messages`. If required make sure to trust the certificates. Follow the following gif to do the same: [Trusting SSL Cert on Windows](https://github.com/OfficeDev/script-lab/blob/master/.github/images/trust-ssl-internet-explorer.gif)
 
 ## Deploying to Azure
 
