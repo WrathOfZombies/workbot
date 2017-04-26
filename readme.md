@@ -41,16 +41,16 @@ Create an `appsettings.json` file in the **root** of the project and paste the f
 
 ```json
 {
-    "Logging": {
-        "IncludeScopes": false,
-        "LogLevel": {
-            "Default": "Warning"
-        }
-    },
-    "BotCredentials": {
-        "ClientId": "CLIENT_ID",
-        "ClientSecret": "CLIENT_SECRET"
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevehttps://work-bot.azurewebsites.net/api/echol": {
+      "Default": "Warning"
     }
+  },
+  "BotConfiguration": {
+    "MicrosoftAppId": "CLIENT_ID",
+    "MicrosoftAppPassword": "CLIENT_SECRET"
+  }
 }
 ```
 
