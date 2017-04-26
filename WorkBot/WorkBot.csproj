@@ -40,4 +40,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.2" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WorkBot.Core\WorkBot.Core.csproj" />
+    <ProjectReference Include="..\WorkBot.Services\WorkBot.Services.csproj" />
+  </ItemGroup>
 </Project>
