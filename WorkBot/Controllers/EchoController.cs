@@ -50,7 +50,7 @@ namespace WorkBot.Controllers
             }
             catch(Exception exception)
             {
-                return UnauthorizedAccessException(exception);
+                return BadRequest(exception);
             }
         }
     }
