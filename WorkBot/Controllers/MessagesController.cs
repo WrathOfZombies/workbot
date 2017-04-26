@@ -14,11 +14,11 @@ using Microsoft.Extensions.Configuration;
 namespace WorkBot.Controllers
 {
     [Route("api/[controller]")]
-    public class EchoController : Controller
+    public class MessagesController : Controller
     {
         private readonly MicrosoftAppCredentials _credentials;
 
-        public EchoController(MicrosoftAppCredentials credentials)
+        public MessagesController(MicrosoftAppCredentials credentials)
         {
             this._credentials = credentials;
         }
