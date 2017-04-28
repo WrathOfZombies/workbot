@@ -9,8 +9,4 @@
     <Folder Include="VSTS\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WorkBot.Core\WorkBot.Core.csproj" />
-  </ItemGroup>
-
 </Project>

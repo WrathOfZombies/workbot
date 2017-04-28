@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using WorkBot.Core;
 
 namespace WorkBot
 {
@@ -26,19 +27,22 @@ namespace WorkBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(_ => Configuration);
+            services.AddOptions();
+
+            services.AddSingleton<IConfigurationRoot>(config => Configuration);
 
 #if DEBUG
-            // Authentication for Microsoft Bot Framework.
-            services.AddSingleton<MicrosoftAppCredentials>(_ => new MicrosoftAppCredentials(
-                Configuration.GetSection("BotConfiguration"),
-                _.GetService<ILoggerFactory>().CreateLogger<MicrosoftAppCredentials>()));            
+            services.Configure<BotConfiguration>(Configuration.GetSection("BotConfiguration"));
 #else
-            services.AddSingleton<MicrosoftAppCredentials>(_ => new MicrosoftAppCredentials(
-                    Environment.GetEnvironmentVariable("CLIENT_ID"),
-                    Environment.GetEnvironmentVariable("CLIENT_SECRET"),
-                    _.GetService<ILoggerFactory>().CreateLogger<MicrosoftAppCredentials>()));
-#endif                    
+            services.Configure<BotConfiguration>(config =>
+            {
+                config.AppId = Environment.GetEnvironmentVariable("BOT_APP_ID");
+                config.AppSecret = Environment.GetEnvironmentVariable("BOT_APP_SECRET");
+                config.Handle = Environment.GetEnvironmentVariable("BOT_HANDLE");
+                config.Name = Environment.GetEnvironmentVariable("BOT_NAME");
+            });
+#endif
+            services.AddSingleton<BotActivityHandler>();
 
             services.AddMvc(options =>
             {
@@ -47,15 +51,13 @@ namespace WorkBot
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, MicrosoftAppCredentials credentials)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<BotConfiguration> config)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseStaticFiles();
-
-            app.UseBotAuthentication(credentials.MicrosoftAppId, credentials.MicrosoftAppPassword);
-
+            app.UseBotAuthentication(config.Value?.AppId, config.Value?.AppSecret);
             app.UseMvc();
         }
     }
