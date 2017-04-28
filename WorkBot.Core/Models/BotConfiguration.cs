@@ -1,4 +1,4 @@
-namespace WorkBot.Core
+namespace WorkBot.Core.Models
 {
     /// <summary>
     /// Contains details of the Bot and is extracted from the Environment config or appsettings.json
