@@ -1,57 +1,39 @@
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using Microsoft.Bot.Connector;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
+using WorkBot.Core;
 
 namespace WorkBot.Controllers
 {
     [Route("api/[controller]")]
     public class MessagesController : Controller
     {
-        private readonly MicrosoftAppCredentials _credentials;
+        private readonly BotActivityHandler _handler;
 
-        public MessagesController(MicrosoftAppCredentials credentials)
+        public MessagesController(BotActivityHandler handler)
         {
-            this._credentials = credentials;
+            this._handler = handler;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok($"Echo bot running successfully via {this._credentials.MicrosoftAppId}");
+#if DEBUG            
+            return Ok(this._handler.config);
+#else
+            return Ok($"{this._handler.config.Name} running successfully...");
+#endif
         }
 
         [Authorize(Roles = "Bot")]
         [HttpPost]
-        public virtual async Task<IActionResult> Post([FromBody]Activity activity)
+        public virtual async Task<IActionResult> Post([FromBody]Microsoft.Bot.Connector.Activity activity)
         {
-            try
-            {
-                var client = new ConnectorClient(new Uri(activity.ServiceUrl), this._credentials);
-                var reply = activity.CreateReply();
-                if (activity.Type == ActivityTypes.Message)
-                {
-                    reply.Text = activity.Text.Replace("Work Bot", "");
-                }
-                else
-                {
-                    reply.Text = $"activity type: {activity.Type}";
-                }
-                await client.Conversations.ReplyToActivityAsync(reply);
-                return Ok();
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception);
-            }
+            await this._handler.QueueActivity(activity);
+            return Ok();
         }
     }
 }
