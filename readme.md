@@ -59,13 +59,15 @@ Create an `appsettings.json` file in the **root** of the project and paste the f
 {
   "Logging": {
     "IncludeScopes": false,
-    "LogLevehttps://work-bot.azurewebsites.net/api/messages": {
+    "LogLevehttps://work-bot.azurewebsites.net/api/echol": {
       "Default": "Warning"
     }
   },
   "BotConfiguration": {
-    "MicrosoftAppId": "CLIENT_ID",
-    "MicrosoftAppPassword": "CLIENT_SECRET"
+    "AppId": "",
+    "AppSecret": "",
+    "Name": "Work Bot",
+    "Handle": "mywork"
   }
 }
 ```
