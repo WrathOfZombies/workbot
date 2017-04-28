@@ -1,4 +1,5 @@
 ﻿using Microsoft.Bot.Connector;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -11,32 +12,31 @@ namespace WorkBot.Core
     {
         public readonly BotConfiguration config;
 
+        private readonly ILogger<BotActivityHandler> _logger;
         private readonly MicrosoftAppCredentials _credentials;
 
-        public BotActivityHandler(IOptions<BotConfiguration> config)
+        public BotActivityHandler(IOptions<BotConfiguration> config, MicrosoftAppCredentials credentials, ILogger<BotActivityHandler> logger)
         {
             this.config = config.Value;
             if (this.config == null)
             {
                 throw new ArgumentNullException("Bot Configuration cannot be null");
             }
-            this._credentials = new MicrosoftAppCredentials(this.config.AppId, this.config.AppSecret);
+            this._credentials = credentials;
+            this._logger = logger;
         }
 
-        private Task<ResourceResponse> CreateClient(string serviceUrl, Activity reply)
+        private async Task<ResourceResponse> SendReply(Activity response)
         {
-            var client = new ConnectorClient(new Uri(serviceUrl), this._credentials);
-            return client.Conversations.ReplyToActivityAsync(reply);
+            using (var client = new ConnectorClient(new Uri(response.ServiceUrl), this._credentials))
+            {
+                return await client.Conversations.ReplyToActivityAsync(response);
+            }
         }
 
         private Activity HandleMessage(Activity activity)
         {
             var reply = activity.CreateReply();
-            if (activity.Attachments.Count > 0)
-            {
-
-            }
-
             if (!string.IsNullOrEmpty(activity.Text))
             {
                 reply.Text = activity.Text.Replace(this.config.Name, "").Trim();
@@ -49,27 +49,35 @@ namespace WorkBot.Core
             throw new NotImplementedException(activity.Type);
         }
 
-        public async Task<ResourceResponse> QueueActivity(Activity activity)
+        public async Task<ResourceResponse> QueueActivity(Activity request)
         {
-            Activity reply;
+            Activity response;
             try
             {
-                switch (activity.Type)
+                if (request == null)
+                {
+                    throw new ArgumentNullException("Invalid message received");
+                }
+                switch (request.Type)
                 {
                     case ActivityTypes.Message:
-                        reply = this.HandleMessage(activity);
+                        response = this.HandleMessage(request);
                         break;
 
                     default:
-                        reply = this.HandleGenericType(activity);
+                        response = this.HandleGenericType(request);
                         break;
                 }
             }
             catch (Exception exception)
             {
-                reply = activity.CreateReply($"Umm... I cannot help you with that.{System.Environment.NewLine}{exception.Message}");
+                string message = "Umm... I cannot help you with that.";
+#if DEBUG
+                message += $"{System.Environment.NewLine}{exception.Message}";
+#endif
+                response = request.CreateReply(message);
             }
-            return await this.CreateClient(activity.ServiceUrl, reply);
+            return await this.SendReply(response);
         }
 
         public void Dispose()

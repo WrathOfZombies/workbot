@@ -26,7 +26,6 @@ namespace WorkBot.Controllers
 #else
             return Ok($"{this._handler.config.Name} running successfully...");
 #endif
-
         }
 
         [Authorize(Roles = "Bot")]
