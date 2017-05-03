@@ -39,27 +39,27 @@ dotnet restore
 
 ### WorkBot
 
-Contains the ASP.Net Core implemenation for the Bot Service and also deals with authentication of the Bot. 
+Contains the ASP.Net Core implemenation for the Bot Service and also deals with authentication of the Bot.
 > Note: Bot Authentication here refers authenticaiton between our service and the Bot Framework so that our service is allowed to send and receive messages to the user
 
 ### WorkBot.Services
 
-Contains the various integration services that WorkBot supports and aggregation logic to determine the right service to be invoked at runtime. 
+Contains the various integration services that WorkBot supports and aggregation logic to determine the right service to be invoked at runtime.
 Also provides definiton for what models the services would depend on and what models they would aggregate into.
 
 ### WorkBot.Core
 
-Contains the core logic to help the bot achieve tasks such as speech determination, routing, dialogs, forms etc. 
+Contains the core logic to help the bot achieve tasks such as speech determination, routing, dialogs, forms etc.
 
 ## Running locally
 
-Create an `appsettings.json` file in the **root** of the project and paste the following into it:
+Create an `appsettings.json` file in the **WorkBot** project and paste the following into it:
 
 ```json
 {
   "Logging": {
     "IncludeScopes": false,
-    "LogLevehttps://work-bot.azurewebsites.net/api/echol": {
+    "LogLevel": {
       "Default": "Warning"
     }
   },
@@ -78,7 +78,7 @@ Use `F5` to start the project.
 
 > Note: If you are having problems debugging on **VSCode** then type `Ctrl` + `Shift` + `P` and enter **Debug: Download .NET Core Debugger** to download the debugger.
 
-### Using Visual Studio Code 
+### Using Visual Studio Code
 
 Navigate to `http://localhost:5000/api/messages` and you should see a message such as *Echo bot is ready with <CLIENT_ID>*
 
