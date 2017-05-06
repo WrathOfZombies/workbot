@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WorkBot.Core.Models;
 
-namespace WorkBot.Core.Generic
+namespace WorkBot.Core.OAuth
 {
     /// <summary>
     /// This Dialog implements a generic OAuth 2.0 Login flow.     
@@ -131,44 +131,7 @@ namespace WorkBot.Core.Generic
             {
                 await LogInAsync(context);
             }
-        }
-
-        /// <summary>
-        /// The chain of dialogs that implements the login/logout process for the bot
-        /// </summary>
-        public static IDialog<string> Authenticate(OAuthDialog<T> dialog)
-        {
-            return Chain
-            .PostToChain()
-            .Switch(
-                new Case<IMessageActivity, IDialog<string>>(msg =>
-                {
-                    var regex = new Regex("^login", RegexOptions.IgnoreCase);
-                    return regex.IsMatch(msg.Text);
-                }, (ctx, msg) =>
-                {
-                    // User wants to login, send the message to Facebook Auth Dialog
-                    return Chain.ContinueWith(dialog,
-                                async (context, res) =>
-                                {
-                                    var token = await res;
-                                    return Chain.Return($"Your are logged with: {token}");
-                                });
-                }),
-                new Case<IMessageActivity, IDialog<string>>((msg) =>
-                {
-                    var regex = new Regex("^logout", RegexOptions.IgnoreCase);
-                    return regex.IsMatch(msg.Text);
-                }, (ctx, msg) =>
-                {
-                    return Chain.Return($"Your are logged out!");
-                }),
-                new DefaultCase<IMessageActivity, IDialog<string>>((ctx, msg) =>
-                {
-                    return Chain.Return("Say \"login\" when you want to login to Facebook!");
-                })
-            ).Unwrap().PostToUser();
-        }
+        }        
         #endregion
 
         #region OAuth Helpers
