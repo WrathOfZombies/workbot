@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using WorkBot.Core;
+using WorkBot.Core.Models;
 
 namespace WorkBot
 {
@@ -34,6 +35,7 @@ namespace WorkBot
 
             // Expose the default Configuration Root
             services.AddSingleton<IConfigurationRoot>(config => Configuration);
+            services.AddSingleton<Conversation>();
 
 #if DEBUG
             // If in DEBUG mode, then get the configuration from the "BotConfiguration" node in appsettings.json.

@@ -28,8 +28,11 @@
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector" Version="3.5.1-int1" />
-    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector.AspNetCore" Version="3.5.1-int3" />
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder" Version="3.8.1" />
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder.Autofac" Version="3.8.1" />
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder.FormFlow.Json" Version="3.8.1" />
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector" Version="3.8.1" />
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector.AspNetCore" Version="3.8.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.3" />

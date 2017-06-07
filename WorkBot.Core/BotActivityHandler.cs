@@ -1,4 +1,5 @@
-﻿using Microsoft.Bot.Connector;
+﻿using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Connector;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
@@ -79,6 +80,29 @@ namespace WorkBot.Core
                 response = request.CreateReply(message);
             }
             return await this.SendReply(response);
+        }
+
+        public async Task<ResourceResponse> QueueReply(string message, Address address)
+        {
+            Activity response;
+            try
+            {
+                response = Activity.CreateMessageActivity() as Activity;
+                response.ChannelId = address.ChannelId;
+                response.ServiceUrl = address.ServiceUrl;
+                response.Text = message;
+                return await this.SendReply(response as Activity);
+            }
+            catch (Exception exception)
+            {
+                string reply = "Umm... I cannot help you with that.";
+#if DEBUG
+                reply += $"{System.Environment.NewLine}{exception.Message}";
+#endif
+                response = Activity.CreateMessageActivity() as Activity;
+                response.Text = message;
+            }
+            return await this.SendReply(response); ;
         }
 
         public void Dispose()
