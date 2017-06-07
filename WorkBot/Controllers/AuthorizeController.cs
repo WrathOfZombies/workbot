@@ -28,28 +28,6 @@ namespace WorkBot.Controllers
         [HttpGet]
         public async Task<ActionResult> Get([Bind] string userId, [Bind] string botId, [Bind] string conversationId, [Bind] string channelId, [Bind] string serviceUrl, [Bind] string code, [Bind] string state, CancellationToken token)
         {
-            // Get the resumption cookie
-            var address = new Address
-                (
-                    // purposefully using named arguments because these all have the same type
-                    botId: GitHubHelpers.TokenDecoder(botId),
-                    channelId: channelId,
-                    userId: GitHubHelpers.TokenDecoder(userId),
-                    conversationId: GitHubHelpers.TokenDecoder(conversationId),
-                    serviceUrl: GitHubHelpers.TokenDecoder(serviceUrl)
-                );
-            var conversationReference = address.ToConversationReference();
-
-            // Exchange the Facebook Auth code with Access token
-            var accessToken = await GitHubHelpers.ExchangeCodeForAccessToken(conversationReference, code, SimpleGitHubAuthDialog.GitHubOauthCallback.ToString());
-
-            // Create the message that is send to conversation to resume the login flow
-            var msg = conversationReference.GetPostToBotMessage();
-            msg.Text = $"token:{accessToken.AccessToken}";
-
-            // Resume the conversation to SimpleFacebookAuthDialog
-            await this._converstaion.ResumeAsync(conversationReference, msg);
-
             return Ok("You are now logged in! Continue talking to the bot.");
         }
     }
