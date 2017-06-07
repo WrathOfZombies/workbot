@@ -10,14 +10,23 @@ using WorkBot.Core.OAuth;
 using Microsoft.Bot.Builder.ConnectorEx;
 using System.Net.Http;
 using System.Threading;
+using Microsoft.Bot.Builder.Dialogs.Internals;
+using Microsoft.Bot.Connector;
 
 namespace WorkBot.Controllers
 {
     [Route("api/[controller]")]
     public class AuthorizeController : Controller
     {
+        private Conversation _converstaion;
+
+        AuthorizeController(Conversation conversation)
+        {
+            this._converstaion = conversation;
+        }
+
         [HttpGet]
-        public async Task<HttpResponseMessage> Get([Bind] string userId, [Bind] string botId, [Bind] string conversationId, [Bind] string channelId, [Bind] string serviceUrl, [Bind] string code, [Bind] string state, CancellationToken token)
+        public async Task<ActionResult> Get([Bind] string userId, [Bind] string botId, [Bind] string conversationId, [Bind] string channelId, [Bind] string serviceUrl, [Bind] string code, [Bind] string state, CancellationToken token)
         {
             // Get the resumption cookie
             var address = new Address
@@ -39,26 +48,9 @@ namespace WorkBot.Controllers
             msg.Text = $"token:{accessToken.AccessToken}";
 
             // Resume the conversation to SimpleFacebookAuthDialog
-            await Conversation.ResumeAsync(conversationReference, msg);
+            await this._converstaion.ResumeAsync(conversationReference, msg);
 
-            using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, msg))
-            {
-                var dataBag = scope.Resolve<IBotData>();
-                await dataBag.LoadAsync(token);
-                ConversationReference pending;
-                if (dataBag.PrivateConversationData.TryGetValue("persistedCookie", out pending))
-                {
-                    // remove persisted cookie
-                    dataBag.PrivateConversationData.RemoveValue("persistedCookie");
-                    await dataBag.FlushAsync(token);
-                    return Request.CreateResponse("You are now logged in! Continue talking to the bot.");
-                }
-                else
-                {
-                    // Callback is called with no pending message as a result the login flow cannot be resumed.
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, new InvalidOperationException("Cannot resume!"));
-                }
-            }
+            return Ok("You are now logged in! Continue talking to the bot.");
         }
     }
 }

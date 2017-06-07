@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using WorkBot.Core.Models;
+using WorkBot.Core.OAuth;
 
 namespace WorkBot.Core
 {
@@ -16,8 +17,9 @@ namespace WorkBot.Core
 
         private readonly ILogger<BotActivityHandler> _logger;
         private readonly MicrosoftAppCredentials _credentials;
+        private readonly Conversation _conversation;
 
-        public BotActivityHandler(IOptions<BotConfiguration> config, MicrosoftAppCredentials credentials, ILogger<BotActivityHandler> logger)
+        public BotActivityHandler(IOptions<BotConfiguration> config, MicrosoftAppCredentials credentials, ILogger<BotActivityHandler> logger, Conversation conversation)
         {
             this.config = config.Value;
             if (this.config == null)
@@ -26,13 +28,15 @@ namespace WorkBot.Core
             }
             this._credentials = credentials;
             this._logger = logger;
+            this._conversation = conversation;
         }
 
         private async Task<ResourceResponse> SendReply(Activity response)
         {
             using (var client = new ConnectorClient(new Uri(response.ServiceUrl), this._credentials))
             {
-                return await client.Conversations.ReplyToActivityAsync(response);
+                await this._conversation.SendAsync(response, () => SimpleGitHubAuthDialog.dialog);
+                return null;
             }
         }
 

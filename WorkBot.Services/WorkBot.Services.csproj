@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard1.6</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="GitHub\" />
     <Folder Include="VSTS\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector" Version="3.8.1" />
   </ItemGroup>
 
 </Project>

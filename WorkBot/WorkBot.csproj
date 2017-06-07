@@ -8,7 +8,7 @@
     <AssemblyTitle>Work Bot</AssemblyTitle>
     <Description>A bot to help query and manage work items across GitHub and Visual Studio Team Services.</Description>
     <Version>1.0.0</Version>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net451+win8</PackageTargetFallback>
     <ApplicationInsightsResourceId>/subscriptions/103f9e39-f8b9-4fa4-81b5-0f17fb195e10/resourcegroups/work-bot/providers/microsoft.insights/components/work-bot</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/103f9e39-f8b9-4fa4-81b5-0f17fb195e10/resourcegroups/work-bot/providers/microsoft.insights/components/work-bot</ApplicationInsightsAnnotationResourceId>
@@ -30,18 +30,18 @@
   <ItemGroup>
     <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder" Version="3.8.1" />
     <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder.Autofac" Version="3.8.1" />
-    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder.FormFlow.Json" Version="3.8.1" />
+    <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder.FormFlow.Json" Version="3.5.1" />
     <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector" Version="3.8.1" />
     <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Connector.AspNetCore" Version="3.8.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.1.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WorkBot.Core\WorkBot.Core.csproj" />
