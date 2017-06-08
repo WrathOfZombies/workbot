@@ -149,6 +149,7 @@ In VSCode the following commands can be useful (**assumes Windows**):
 
 ## Useful links
 
+- https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-concepts
 - https://code.visualstudio.com/docs/other/dotnet
 - https://docs.microsoft.com/en-us/aspnet/core/tutorials/web-api-vsc
 - https://www.hanselman.com/blog/ExploringTheNewNETDotnetCommandLineInterfaceCLI.aspx
